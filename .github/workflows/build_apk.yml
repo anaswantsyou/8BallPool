@@ -10,13 +10,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-      - name: Verify Gradle Wrapper
+      - name: Generate Gradle Wrapper
         run: |
-          ls -la
-          ls -la gradle/
-          ls -la gradle/wrapper/
-      - name: Grant execute permission
-        run: chmod +x gradlew
+          gradle wrapper --gradle-version 7.4.2
+          chmod +x gradlew
       - name: Build Debug APK
         run: ./gradlew assembleDebug --stacktrace
       - name: Upload APK
