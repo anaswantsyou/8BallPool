@@ -12,14 +12,13 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           
-      - name: Install Gradle
+      - name: Fix Gradle Files
         run: |
-          # Install Gradle directly (bypasses wrapper issues)
-          sudo apt-get update && sudo apt-get install -y gradle
+          # Update build.gradle syntax
+          sed -i "s/tasks.register('clean', Delete)/task clean(type: Delete)/g" build.gradle
           
-      - name: Generate Gradle Wrapper
-        run: |
-          gradle wrapper --gradle-version 7.5 --distribution-type bin
+          # Generate fresh wrapper
+          gradle wrapper --gradle-version 4.10.3 --distribution-type bin
           chmod +x gradlew
           
       - name: Build with Gradle
