@@ -5,19 +5,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK
+      - name: Set up JDK 8 (LTS)
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '11'
-      - name: Generate Gradle Wrapper
+          java-version: '8'  # Older Android projects often need JDK 8
+      - name: Fix Gradle Wrapper
         run: |
-          gradle wrapper --gradle-version 7.4.2
+          # Remove corrupted wrapper if exists
+          rm -f gradlew gradlew.bat gradle/wrapper/gradle-wrapper.jar
+          # Generate new wrapper with compatible version
+          gradle wrapper --gradle-version 4.10.3 --distribution-type bin
           chmod +x gradlew
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+      - name: Build with Gradle
+        run: ./gradlew assembleDebug --stacktrace --no-daemon
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: 8BallPool-APK
+          name: app-debug
           path: app/build/outputs/apk/debug/*.apk
