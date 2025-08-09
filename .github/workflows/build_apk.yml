@@ -6,19 +6,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      # ▼▼▼ REPLACE YOUR OLD JDK STEP WITH THIS ▼▼▼
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
-      # ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-      
-      - name: Fix Gradle Wrapper
+          
+      - name: Install Gradle
         run: |
-          rm -f gradlew*
-          ./gradlew wrapper --gradle-version 7.5 --distribution-type bin
-             chmod +x gradlew
+          # Install Gradle directly (bypasses wrapper issues)
+          sudo apt-get update && sudo apt-get install -y gradle
+          
+      - name: Generate Gradle Wrapper
+        run: |
+          gradle wrapper --gradle-version 7.5 --distribution-type bin
+          chmod +x gradlew
           
       - name: Build with Gradle
         run: ./gradlew assembleDebug --stacktrace --no-daemon
