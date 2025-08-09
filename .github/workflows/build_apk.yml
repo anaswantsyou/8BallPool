@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -18,7 +18,7 @@ jobs:
           sed -i "s/tasks.register('clean', Delete)/task clean(type: Delete)/g" build.gradle
           
           # Generate fresh wrapper
-          gradle wrapper --gradle-version 4.10.3 --distribution-type bin
+          ./gradlew wrapper --gradle-version 7.5 --distribution-type bin
           chmod +x gradlew
           
       - name: Build with Gradle
