@@ -8,13 +8,14 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'  # REQUIRED - Add this line
+          distribution: 'temurin'
           java-version: '11'
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x gradlew
       - name: Build Debug APK
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --stacktrace
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: 8BallPool-APK
