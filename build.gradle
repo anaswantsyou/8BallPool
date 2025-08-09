@@ -33,6 +33,7 @@ subprojects {
     }
 }
 
-tasks.register('clean', Delete) {
-    delete rootProject.layout.buildDirectory
+// New compatible syntax
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
